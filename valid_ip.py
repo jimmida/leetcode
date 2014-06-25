@@ -1,0 +1,46 @@
+import itertools as it
+
+class Solution:
+    # @param s, a string
+    # @return a list of strings
+    def restoreIpAddresses(self, s):
+        # if len(s) > 12:
+        #     return []
+        i,j,k = range(3)
+        valids = []
+        while i<3:
+            while j<=i+3:
+                while k<=j+3 and k+1<len(s):
+                    valids = self.valid_address(s, i, j, k, valids)
+                    k += 1
+                j += 1
+                k = j + 1
+            i += 1
+            j = i + 1
+            k = j + 1
+        return valids
+
+    def valid_address(self, s, i, j, k, valids):
+        octets = []
+        octets.append(int(s[:i+1]))
+        octets.append(int(s[i+1:j+1]))
+        octets.append(int(s[j+1:k+1]))
+        octets.append(int(s[k+1:]))
+        is_valid = True
+        for octet in octets:
+            is_valid = is_valid and octet>=0 and octet <=255 \
+                        and ''.join([str(o) for o in octets]) == s
+        if is_valid:
+            valids.append('.'.join([str(o) for o in octets]))
+        return valids
+
+    def generatePatterns(self):
+        x=[i for i in it.product([1,2,3],repeat=4)]
+        return x
+
+
+s = Solution()
+# s.restoreIpAddresses('0000')
+# s.restoreIpAddresses('25525511135')
+# print s.restoreIpAddresses('111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')
+print s.restoreIpAddresses('010010')
